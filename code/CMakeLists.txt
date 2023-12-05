@@ -5,8 +5,14 @@ project(MyGuiApp)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 找到OpenGL
 find_package(OpenGL REQUIRED)
+
+
+# 包含头文件目录
+include_directories(
+    ${CMAKE_SOURCE_DIR}/include
+    # 如果有其他依赖，也应该包含它们的头文件目录
+)
 
 # 添加ImGui库
 set(IMGUI_DIR "${CMAKE_SOURCE_DIR}/external/imgui")
@@ -21,24 +27,26 @@ add_library(imgui
 target_include_directories(imgui PUBLIC ${IMGUI_DIR})
 target_include_directories(imgui PUBLIC ${IMGUI_DIR}/backends)
 
-# 添加OCCT库（确保路径正确）
-set(OCCT_DIR "${CMAKE_SOURCE_DIR}/external/occt")
-# ... 这里你需要添加OCCT的库和include路径
-
-# 添加你的源文件
-add_executable(MyGuiApp
+# 将源文件添加到此变量
+set(SOURCE_FILES
     src/main.cpp
-    # 其他cpp文件
+    #src/Geometry.cpp
+    #src/Renderer.cpp
+    #src/EventHandler.cpp
+    # 如果有其他源文件，也应该添加到这里
 )
 
-# 链接OpenGL、GLFW、ImGui和OCCT到你的项目
-target_link_libraries(MyGuiApp
+# 添加可执行文件
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+# 链接OpenGL、GLFW、ImGui和其他必要的库
+target_link_libraries(${PROJECT_NAME}
     OpenGL::GL
     glfw
     imgui
-    ${CMAKE_DL_LIBS} # 添加这行来链接libdl
-    # OCCT库
+    ${CMAKE_DL_LIBS} # 链接动态链接库
+    # 如果需要其他库，也应该在这里链接
 )
 
-# 包含头文件目录
-target_include_directories(MyGuiApp PRIVATE include)
+target_include_directories(${PROJECT_NAME} PUBLIC include)
+

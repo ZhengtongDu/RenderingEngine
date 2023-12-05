@@ -74,3 +74,15 @@ int main(int, char**) {
 
     return 0;
 }
+
+
+/*
+
+#include "Application.h"
+
+int main(int, char**) {
+    Application app;
+    app.Run();
+    return 0;
+}
+*/

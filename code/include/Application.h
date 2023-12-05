@@ -1,7 +1,8 @@
-#pragma once
-#include "ImGuiLayer.h"
-#include "RenderLayer.h"
-#include "GeometryEditor.h"
+#ifndef APPLICATION_H
+#define APPLICATION_H
+
+#include "Renderer.h"
+#include "EventHandler.h"
 
 class Application {
 public:
@@ -10,8 +11,9 @@ public:
     void Run();
 
 private:
-    bool running = true;
-    ImGuiLayer imguiLayer;
-    RenderLayer renderLayer;
-    GeometryEditor geometryEditor;
+    Renderer renderer;
+    EventHandler eventHandler;
+    // 其他应用程序状态和逻辑
 };
+
+#endif // !APPLICATION_H
