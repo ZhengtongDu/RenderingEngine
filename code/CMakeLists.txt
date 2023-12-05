@@ -27,6 +27,10 @@ add_library(imgui
 target_include_directories(imgui PUBLIC ${IMGUI_DIR})
 target_include_directories(imgui PUBLIC ${IMGUI_DIR}/backends)
 
+set(GLAD_DIR "${CMAKE_SOURCE_DIR}/external/glad")
+add_library(glad "${GLAD_DIR}/glad.c")
+target_include_directories(glad PUBLIC "${GLAD_DIR}/include")
+
 # 将源文件添加到此变量
 set(SOURCE_FILES
     src/main.cpp
@@ -45,6 +49,7 @@ target_link_libraries(${PROJECT_NAME}
     OpenGL::GL
     glfw
     imgui
+    glad
     ${CMAKE_DL_LIBS} # 链接动态链接库
     # 如果需要其他库，也应该在这里链接
 )

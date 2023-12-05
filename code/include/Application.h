@@ -4,6 +4,9 @@
 // #include "Renderer.h"
 // #include "EventHandler.h"
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h> // 包含glfw3.h
+
 class Application {
 public:
     Application();
@@ -14,6 +17,7 @@ private:
     // Renderer renderer;
     // EventHandler eventHandler;
     // 其他应用程序状态和逻辑
+    GLFWwindow* window;
 };
 
 
