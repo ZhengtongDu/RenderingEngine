@@ -30,6 +30,7 @@ target_include_directories(imgui PUBLIC ${IMGUI_DIR}/backends)
 # 将源文件添加到此变量
 set(SOURCE_FILES
     src/main.cpp
+    src/Application.cpp
     #src/Geometry.cpp
     #src/Renderer.cpp
     #src/EventHandler.cpp
