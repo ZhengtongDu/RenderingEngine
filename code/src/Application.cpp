@@ -5,7 +5,49 @@
 #include <iostream>
 #include "stb_image.h"
 #include "shader_s.h"
-#include "camera.h"
+#include "Camera.h"
+#include "ResourceManager.h"
+#include <utility>
+#include <map>
+
+//-------------------------------------------------------
+
+// Renderer.h
+class Renderer {
+public:
+    Renderer(GLFWwindow* window);
+    void RenderFrame();
+    // 其他成员函数...
+
+private:
+    GLFWwindow* window;
+    Camera camera; // 摄像机对象
+    //Light light;   // 光源对象
+    // 可能还有其他渲染状态和配置
+};
+
+// Renderer.cpp
+Renderer::Renderer(GLFWwindow* window) : window(window), camera(/* 初始化参数 */) { // , light(/* 初始化参数 */) {
+    // 初始化渲染相关的设置
+    // 例如，加载着色器、设置光照参数等
+}
+
+void Renderer::RenderFrame() {
+    // 使用 camera 和 light 的数据进行渲染
+    // ...
+}
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------
+
 
 unsigned int shaderProgram;
 unsigned int VBO, VAO;
