@@ -7,97 +7,79 @@
 #include "shader_s.h"
 #include "camera.h"
 
-    unsigned int shaderProgram;
+unsigned int shaderProgram;
+unsigned int VBO, VAO;
 
-    unsigned int VBO, VAO;
-
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-
-const char *fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\0";
-
+// 回调函数声明
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn);
 void processInput(GLFWwindow *window);
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
-unsigned int loadTexture(char const *path);
+unsigned int loadTexture(const char *path);
 
-// setting
+// 设置
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-// camera
+// 摄像机
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
-// timing
-float deltaTime = 0.0f; // time between current frame and last frame
-float lastFrame = 0.0f;
-float responseTime = 0.0f;
+// 计时
+float deltaTime = 0.0f; // 当前帧与上一帧的时间差
+float lastFrame = 0.0f; // 上一帧的时间
+float responseTime = 0.0f; // 响应时间，用于处理按键事件的防抖
 
-// light caster type
-int casterType = 1;
+// 光源类型
+int casterType = 1; // 默认为点光源类型
 
+// GLFW错误回调函数
 static void glfw_error_callback(int error, const char* description) {
-    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+    fprintf(stderr, "GLFW错误 %d: %s\n", error, description);
 }
 
+// 初始化OpenGL
 void initializeGL()
 {
-
+    // 这里可以放置OpenGL初始化时需要执行的代码
 }
 
+// 应用程序构造函数
 Application::Application() {
     // 初始化GLFW，设置OpenGL上下文和ImGui等
     // 设置错误回调
     glfwSetErrorCallback(glfw_error_callback);
-    
 
     // 初始化GLFW
     if (!glfwInit())
-        return ;
+        return;
 
     // 创建窗口
     window = glfwCreateWindow(1280, 720, "MyGuiApp", NULL, NULL);
     if (window == NULL)
-        return ;
+        return;
 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
-    // tell GLFW to capture our mouse
+    // 告诉GLFW捕获我们的鼠标
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // glad: load all OpenGL function pointers
+    // glad: 加载所有OpenGL函数指针
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return ;
+        std::cout << "初始化GLAD失败" << std::endl;
+        return;
     }
 
-    // enable depth test
+    // 启用深度测试
     glEnable(GL_DEPTH_TEST);
 
     glfwSwapInterval(1); // 启用垂直同步
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "wrong load glad" << std::endl;
-    // 处理错误，GLAD 没有成功初始化
-    }
-
 
     // 初始化ImGui
     IMGUI_CHECKVERSION();
@@ -113,14 +95,14 @@ Application::Application() {
     initializeGL();
 }
 
+// 应用程序析构函数
 Application::~Application() {
     // 清理资源
 }
 
-
+// 应用程序运行函数
 void Application::Run() {
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    //-----------------------------------------------------
+    // 设置顶点数据（和缓冲区）并配置顶点属性
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,    0.0f,   0.0f,  -1.0f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,    0.0f,   0.0f,  -1.0f,  1.0f, 0.0f,
@@ -351,12 +333,14 @@ void mouse_callback(GLFWwindow *window, double xposIn, double yposIn){
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
+// 鼠标滚轮回调函数
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
 
-unsigned int loadTexture(char const *path) {
-    unsigned textureID;
+// 加载纹理函数
+unsigned int loadTexture(const char *path) {
+    unsigned int textureID;
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
@@ -380,8 +364,9 @@ unsigned int loadTexture(char const *path) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
-    else
-        std::cout << "Texture failed to load at path: " << path << std::endl;
+    else {
+        std::cout << "纹理加载失败，路径：" << path << std::endl;
+    }
     stbi_image_free(data);
 
     return textureID;
