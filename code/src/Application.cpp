@@ -51,7 +51,7 @@ void initializeGL()
 }
 
 // 应用程序构造函数
-Application::Application(char* windowName) {
+Application::Application(const char* windowName) {
     // 初始化GLFW，设置OpenGL上下文和ImGui等
     // 设置错误回调
     glfwSetErrorCallback(glfw_error_callback);
@@ -61,14 +61,14 @@ Application::Application(char* windowName) {
         return;
 
     // 创建窗口
-    window = glfwCreateWindow(1280, 720, windowName, nullptr, nullptr);
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, windowName, nullptr, nullptr);
     if (window == nullptr){
         return;
     }
 
-    renderTool = std::make_unique<Renderer>(window);
+    renderTool = std::make_unique<Renderer>(window, SCR_WIDTH, SCR_HEIGHT);
 
-
+/* 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
@@ -100,7 +100,7 @@ Application::Application(char* windowName) {
     // 绑定ImGui与GLFW
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
-    initializeGL();
+ */    initializeGL();
 }
 
 // 应用程序析构函数

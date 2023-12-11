@@ -4,15 +4,15 @@
 // #include "Renderer.h"
 // #include "EventHandler.h"
 
+#include "Renderer.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h> // 包含glfw3.h
 #include <glm/glm.hpp>
 #include <memory>
-#include <string>
 
 class Application {
 public:
-    Application(char *windowName = "GUI APP");
+    Application(const char *windowName = "GUI APP");
     ~Application();
     void Run();
 

@@ -39,6 +39,8 @@ target_include_directories(stb_image PUBLIC "${STB_IMAGE_DIR}")
 set(SOURCE_FILES
     "src/main.cpp"
     "src/Application.cpp"
+    "src/Renderer.cpp"
+    "src/shader_s.cpp"
     # 如果有其他源文件，也应该添加到这里
 )
 
