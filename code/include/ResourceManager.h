@@ -19,10 +19,43 @@ public:
     unsigned int LoadTexture(const char *path);
     // 其他资源加载函数...
 
+    // 存储资源的容器
+    std::map<std::string, Texture> Textures;
+    std::map<std::string, Shader> Shaders;
+    std::map<std::string, Mesh> Meshes;
+
+    // 创建纹理的函数
+    Texture& LoadTexture(std::string file, std::string name);
+    Texture& GetTexture(std::string name);
+
+    // 创建着色器的函数
+    Shader& LoadShader(std::string vShaderFile, std::string fShaderFile, std::string name);
+    Shader& GetShader(std::string name);
+
+    // 加载模型的函数
+    Mesh& LoadMesh(std::string file, std::string name);
+    Mesh& GetMesh(std::string name);
+
+    // 绑定VAO和VBO等的函数
+    void SetupMesh(Mesh& mesh);
+
+    // 清除所有资源
+    void Clear();
+
+
 private:
-    // 私有构造函数和析构函数
+    // 私有的构造函数，确保单例
     ResourceManager() {}
     ~ResourceManager() {}
+
+    // 加载和编译着色器的辅助函数
+    Shader loadShaderFromFile(string vShaderFile, string fShaderFile);
+
+    // 加载纹理的辅助函数
+    Texture loadTextureFromFile(std::string file);
+
+    // 加载模型的辅助函数
+    // Mesh loadMeshFromFile(std::string file);
 
     // 存储资源的容器
     std::map<std::string, unsigned int> textures; // 纹理资源映射

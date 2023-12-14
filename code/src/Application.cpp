@@ -68,39 +68,7 @@ Application::Application(const char* windowName) {
 
     renderTool = std::make_unique<Renderer>(window, SCR_WIDTH, SCR_HEIGHT);
 
-/* 
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
-
-    // 告诉GLFW捕获我们的鼠标
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-    // glad: 加载所有OpenGL函数指针
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "初始化GLAD失败" << std::endl;
-        return;
-    }
-
-    // 启用深度测试
-    glEnable(GL_DEPTH_TEST);
-
-    glfwSwapInterval(1); // 启用垂直同步
-
-    // 初始化ImGui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-    // 设置ImGui样式
-    ImGui::StyleColorsClassic();
-
-    // 绑定ImGui与GLFW
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
- */    initializeGL();
+    initializeGL();
 }
 
 // 应用程序析构函数
