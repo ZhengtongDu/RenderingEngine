@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include "mesh.h"
 
 class ResourceManager {
 public:
@@ -49,7 +50,7 @@ private:
     ~ResourceManager() {}
 
     // 加载和编译着色器的辅助函数
-    Shader loadShaderFromFile(string vShaderFile, string fShaderFile);
+    Shader loadShaderFromFile(std::string vShaderFile, std::string fShaderFile);
 
     // 加载纹理的辅助函数
     Texture loadTextureFromFile(std::string file);

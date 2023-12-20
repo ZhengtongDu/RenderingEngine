@@ -41,6 +41,7 @@ set(SOURCE_FILES
     "src/Application.cpp"
     "src/Renderer.cpp"
     "src/shader_s.cpp"
+    "src/mesh.cpp"
     # 如果有其他源文件，也应该添加到这里
 )
 
