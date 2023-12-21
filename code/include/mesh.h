@@ -33,7 +33,7 @@ public:
     std::vector<Texture> textures;
 
     // function
-    Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<Texture> _textures);
+    Mesh(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture>& _textures);
     void Draw(Shader shader);
 
 private:

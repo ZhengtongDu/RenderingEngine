@@ -7,6 +7,7 @@
 #include "shader_s.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "OBJ_Loader.h"
 #include <utility>
 #include <map>
 
@@ -78,7 +79,53 @@ Application::~Application() {
 
 // 应用程序运行函数
 void Application::Run() {
+
+
     // 设置顶点数据（和缓冲区）并配置顶点属性
+
+    objl::Loader Loader;
+    std::string obj_path = "../assets/objects/bunny.obj";
+    bool loadout = Loader.LoadFile(obj_path);
+
+    std::vector<float> bunnyVerticesVector;
+
+    if(loadout == true)
+    {
+        for(auto mesh : Loader.LoadedMeshes)
+        {
+            for(int i = 0; i < mesh.Vertices.size(); i += 3)
+            {
+                bunnyVerticesVector.push_back(mesh.Vertices[i].Position.X);
+                bunnyVerticesVector.push_back(mesh.Vertices[i].Position.Y);
+                bunnyVerticesVector.push_back(mesh.Vertices[i].Position.Z);
+                bunnyVerticesVector.push_back(mesh.Vertices[i].Normal.X);
+                bunnyVerticesVector.push_back(mesh.Vertices[i].Normal.Y);
+                bunnyVerticesVector.push_back(mesh.Vertices[i].Normal.Z);
+            }
+        }
+    }
+    float *bunnyVertices = new float[bunnyVerticesVector.size()];
+    for(int i = 0; i < bunnyVerticesVector.size(); i++)
+    {
+        bunnyVertices[i] = bunnyVerticesVector[i];
+        std::cout << i << " th value is " <<bunnyVertices[i] << std::endl;
+    }
+
+    unsigned int bunnyVAO, bunnyVBO;
+    glGenVertexArrays(1, &bunnyVAO);
+    glGenBuffers(1, &bunnyVBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, bunnyVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(bunnyVerticesVector), bunnyVertices, GL_STATIC_DRAW);
+    glBindVertexArray(bunnyVAO);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
+    glEnableVertexAttribArray(0);
+    // normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,    0.0f,   0.0f,  -1.0f,  0.0f, 0.0f,
          0.5f, -0.5f, -0.5f,    0.0f,   0.0f,  -1.0f,  1.0f, 0.0f,
@@ -200,6 +247,7 @@ void Application::Run() {
         // render
         //-------------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        // glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // set MVP matrices
@@ -217,6 +265,9 @@ void Application::Run() {
         lampShader.setMat4("projection", projection);
         lampShader.setMat4("view", view);
         lampShader.setMat4("model", model);
+
+            // glBindVertexArray(bunnyVAO);
+            // glDrawArrays(GL_TRIANGLES, 0, 9936);            
 
         glBindVertexArray(lightVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -244,6 +295,8 @@ void Application::Run() {
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, specularMap);
             glBindVertexArray(VAO);
+            glDrawArrays(GL_TRIANGLES, 0, 36);            
+            glBindVertexArray(bunnyVAO);
             glDrawArrays(GL_TRIANGLES, 0, 36);            
         }
 
