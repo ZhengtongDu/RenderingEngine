@@ -8,6 +8,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "OBJ_Loader.h"
+#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <utility>
 #include <map>
 
@@ -91,24 +93,52 @@ void Application::Run() {
 
     if(loadout == true)
     {
-        for(auto mesh : Loader.LoadedMeshes)
+        for(int i = 0; i < Loader.LoadedVertices.size(); i++)
         {
-            for(int i = 0; i < mesh.Vertices.size(); i += 3)
-            {
-                bunnyVerticesVector.push_back(mesh.Vertices[i].Position.X);
-                bunnyVerticesVector.push_back(mesh.Vertices[i].Position.Y);
-                bunnyVerticesVector.push_back(mesh.Vertices[i].Position.Z);
-                bunnyVerticesVector.push_back(mesh.Vertices[i].Normal.X);
-                bunnyVerticesVector.push_back(mesh.Vertices[i].Normal.Y);
-                bunnyVerticesVector.push_back(mesh.Vertices[i].Normal.Z);
-            }
+            Eigen::Vector3f v1(10 * Loader.LoadedVertices[i].Position.X, 10 * Loader.LoadedVertices[i].Position.Y, 10 * Loader.LoadedVertices[i].Position.Z);
+            i++;
+            Eigen::Vector3f v2(10 * Loader.LoadedVertices[i].Position.X, 10 * Loader.LoadedVertices[i].Position.Y, 10 * Loader.LoadedVertices[i].Position.Z);
+            i++;
+            Eigen::Vector3f v3(10 * Loader.LoadedVertices[i].Position.X, 10 * Loader.LoadedVertices[i].Position.Y, 10 * Loader.LoadedVertices[i].Position.Z);
+            Eigen::Vector3f e1, e2;
+            e1 = v2 - v1, e2 = v3 - v2;
+            Eigen::Vector3f normal = e2.cross(e1).normalized();
+            bunnyVerticesVector.push_back(v1.x());
+            bunnyVerticesVector.push_back(v1.y());
+            bunnyVerticesVector.push_back(v1.z());
+            bunnyVerticesVector.push_back(normal.x());
+            bunnyVerticesVector.push_back(normal.y());
+            bunnyVerticesVector.push_back(normal.z());
+            bunnyVerticesVector.push_back(v2.x());
+            bunnyVerticesVector.push_back(v2.y());
+            bunnyVerticesVector.push_back(v2.z());
+            bunnyVerticesVector.push_back(normal.x());
+            bunnyVerticesVector.push_back(normal.y());
+            bunnyVerticesVector.push_back(normal.z());
+            bunnyVerticesVector.push_back(v3.x());
+            bunnyVerticesVector.push_back(v3.y());
+            bunnyVerticesVector.push_back(v3.z());
+            bunnyVerticesVector.push_back(normal.x());
+            bunnyVerticesVector.push_back(normal.y());
+            bunnyVerticesVector.push_back(normal.z());
         }
     }
     float *bunnyVertices = new float[bunnyVerticesVector.size()];
     for(int i = 0; i < bunnyVerticesVector.size(); i++)
     {
         bunnyVertices[i] = bunnyVerticesVector[i];
-        std::cout << i << " th value is " <<bunnyVertices[i] << std::endl;
+    }
+
+    for(int i = 0; i < bunnyVerticesVector.size() / 6; i++)
+    {
+        std::cout << "the " << i << " th point vector: ";
+        std::cout << bunnyVerticesVector[6 * i] << ", " ;
+        std::cout << bunnyVerticesVector[6 * i + 1] << ", " ;
+        std::cout << bunnyVerticesVector[6 * i + 2] << std::endl;
+        std::cout << "normal vector: ";
+        std::cout << bunnyVerticesVector[6 * i + 3] << ", " ;
+        std::cout << bunnyVerticesVector[6 * i + 4] << ", " ;
+        std::cout << bunnyVerticesVector[6 * i + 5] << std::endl;
     }
 
     unsigned int bunnyVAO, bunnyVBO;
@@ -116,7 +146,7 @@ void Application::Run() {
     glGenBuffers(1, &bunnyVBO);
 
     glBindBuffer(GL_ARRAY_BUFFER, bunnyVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(bunnyVerticesVector), bunnyVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, bunnyVerticesVector.size() * sizeof(float), bunnyVertices, GL_STATIC_DRAW);
     glBindVertexArray(bunnyVAO);
 
     // position attribute
@@ -246,8 +276,8 @@ void Application::Run() {
 
         // render
         //-------------
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        // glEnable(GL_DEPTH_TEST);
+        glClearColor(0.2f, 0.2f, 0.4f, 1.0f);
+        glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // set MVP matrices
@@ -266,11 +296,9 @@ void Application::Run() {
         lampShader.setMat4("view", view);
         lampShader.setMat4("model", model);
 
-            // glBindVertexArray(bunnyVAO);
-            // glDrawArrays(GL_TRIANGLES, 0, 9936);            
 
-        glBindVertexArray(lightVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        // glBindVertexArray(lightVAO);
+        // glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // set object
         lightingShader.use();
@@ -294,10 +322,13 @@ void Application::Run() {
             glBindTexture(GL_TEXTURE_2D, diffuseMap);
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, specularMap);
-            glBindVertexArray(VAO);
-            glDrawArrays(GL_TRIANGLES, 0, 36);            
             glBindVertexArray(bunnyVAO);
-            glDrawArrays(GL_TRIANGLES, 0, 36);            
+            glDrawArrays(GL_TRIANGLES, 0, bunnyVerticesVector.size() / 6);
+
+            // glBindVertexArray(VAO);
+            // glDrawArrays(GL_TRIANGLES, 0, 36);            
+            // glBindVertexArray(bunnyVAO);
+            // glDrawArrays(GL_TRIANGLES, 0, 36);            
         }
 
 

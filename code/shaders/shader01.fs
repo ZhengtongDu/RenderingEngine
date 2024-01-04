@@ -77,11 +77,14 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
     // ambient light
-    vec3 ambient = light.ambient * texture(material.diffuse, TexCoords).rgb;
+    // vec3 ambient = light.ambient * texture(material.diffuse, TexCoords).rgb;
+    vec3 ambient = light.ambient * 5.0f;
     // diffuse light
-    vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb;
+    // vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb;
+    vec3 diffuse = light.diffuse * diff * 3.0f;
     // specular light
-    vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;
+    // vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;
+    vec3 specular = light.specular * spec * 10.0f;
 
     if(casterType == 3) {
         float theta = dot(lightDir, normalize(-direction));

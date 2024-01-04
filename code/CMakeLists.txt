@@ -58,6 +58,9 @@ target_link_libraries(${PROJECT_NAME}
     ${CMAKE_DL_LIBS} # 链接动态链接库
 )
 
+target_include_directories(${PROJECT_NAME} PRIVATE "/usr/include/eigen3")
+
+
 # 包含头文件目录
 target_include_directories(${PROJECT_NAME} PUBLIC
     "${CMAKE_SOURCE_DIR}/include"
