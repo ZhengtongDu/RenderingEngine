@@ -12,7 +12,11 @@
 #include <utility>
 #include <map>
 
-// Renderer.h
+/**
+ * @class Renderer
+ * @brief 渲染模块类，被Application类调用，用于处理程序中和OpenGL有关部分的响应
+ *
+ */
 class Renderer {
 public:
     Renderer(GLFWwindow* _window, const unsigned int& _screenWidth, const unsigned int& _screenHeight);

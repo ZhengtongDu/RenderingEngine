@@ -1,3 +1,10 @@
+/**
+ * @file Application.h
+ * @brief 用来调用程序的接口头文件
+ *
+ * 本头文件用来处理opengl相关初始化事项，进一步细分代码结构
+ */
+
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
@@ -10,6 +17,11 @@
 #include <glm/glm.hpp>
 #include <memory>
 
+/**
+ * @class Application
+ * @brief 程序接口类，用于整合各个模块的内容
+ *
+ */
 class Application {
 public:
     Application(const char *windowName = "GUI APP");

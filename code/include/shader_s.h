@@ -12,6 +12,11 @@
 #include <sstream>
 #include <iostream>
 
+/**
+ * @class Shader
+ * @brief 着色器类，用来导入着色器并进行相关赋值操作
+ *
+ */
 class Shader
 {
 public:

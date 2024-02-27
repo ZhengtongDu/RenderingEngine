@@ -5,6 +5,12 @@
 #include <string>
 #include "mesh.h"
 
+/**
+ * @class ResourceManager
+ * @brief 资源管理类，用来处理模型文件I/O操作、加载操作
+ *
+ * 这个类目前还没有写好
+ */
 class ResourceManager {
 public:
     // 删除复制构造函数和赋值操作符，确保只有一个实例

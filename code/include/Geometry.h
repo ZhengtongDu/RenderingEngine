@@ -4,6 +4,13 @@
 #include <vector>
 
 // 定义几何体数据结构
+
+/**
+ * @class Geometry
+ * @brief 几何类，用来存储不同的几何体数据结构
+ *
+ * 这部分内容还有待补充，暂时不使用
+ */
 class Geometry {
 public:
     Geometry();

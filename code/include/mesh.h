@@ -25,6 +25,11 @@ struct Texture
     std::string path;
 };
 
+/**
+ * @class Mesh
+ * @brief 网格类，内部存储各种网格相关的信息
+ *
+ */
 class Mesh {
 public:
     // mesh data
