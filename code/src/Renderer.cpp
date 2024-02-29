@@ -1,8 +1,8 @@
 #include "Renderer.h"
 
-    static void framebuffer_size_callback_wrapper(GLFWwindow* window, int width, int height);
-    static void mouse_callback_wrapper(GLFWwindow* window, double xpos, double ypos);
-    static void scroll_callback_wrapper(GLFWwindow* window, double xoffset, double yoffset);
+    // static void framebuffer_size_callback_wrapper(GLFWwindow* window, int width, int height);
+    // static void mouse_callback_wrapper(GLFWwindow* window, double xpos, double ypos);
+    // static void scroll_callback_wrapper(GLFWwindow* window, double xoffset, double yoffset);
 
 // Renderer.cpp
 Renderer::Renderer(GLFWwindow* _window, const unsigned int& _screenWidth, const unsigned int& _screenHeight) : window(_window), screenWidth(_screenWidth), screenHeight(_screenHeight), camera(/* 初始化参数 */) { // , light(/* 初始化参数 */) {
@@ -24,12 +24,12 @@ Renderer::Renderer(GLFWwindow* _window, const unsigned int& _screenWidth, const 
     // 设置用户指针，以便在静态回调函数中获取 Application 类的实例
     glfwSetWindowUserPointer(window, this);
 
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback_wrapper);
-    glfwSetCursorPosCallback(window, mouse_callback_wrapper);
-    glfwSetScrollCallback(window, scroll_callback_wrapper);
+    // glfwSetFramebufferSizeCallback(window, framebuffer_size_callback_wrapper);
+    // glfwSetCursorPosCallback(window, mouse_callback_wrapper);
+    // glfwSetScrollCallback(window, scroll_callback_wrapper);
 
-    // 告诉GLFW捕获我们的鼠标
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // // 告诉GLFW捕获我们的鼠标
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // glad: 加载所有OpenGL函数指针
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))

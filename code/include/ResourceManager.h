@@ -5,6 +5,9 @@
 #include <string>
 #include "mesh.h"
 
+
+
+
 /**
  * @class ResourceManager
  * @brief 资源管理类，用来处理模型文件I/O操作、加载操作
@@ -13,19 +16,14 @@
  */
 class ResourceManager {
 public:
-    // 删除复制构造函数和赋值操作符，确保只有一个实例
-    ResourceManager(const ResourceManager&) = delete;
-    ResourceManager& operator=(const ResourceManager&) = delete;
 
-    // 提供一个全局访问点
-    static ResourceManager& GetInstance() {
-        static ResourceManager instance; // Guaranteed to be destroyed and instantiated on first use
-        return instance;
-    }
+    ResourceManager() {}
+    ~ResourceManager() {}
 
     unsigned int LoadTexture(const char *path);
     // 其他资源加载函数...
 
+    bool loadMesh(std::string& fileName, std::vector<float>& retVector);
     // 存储资源的容器
     std::map<std::string, Texture> Textures;
     std::map<std::string, Shader> Shaders;
@@ -51,9 +49,6 @@ public:
 
 
 private:
-    // 私有的构造函数，确保单例
-    ResourceManager() {}
-    ~ResourceManager() {}
 
     // 加载和编译着色器的辅助函数
     Shader loadShaderFromFile(std::string vShaderFile, std::string fShaderFile);
