@@ -11,7 +11,10 @@
 #include <Eigen/Core>
 #include <utility>
 #include <map>
-
+#include "QEM.h"
+#include <glm/glm.hpp>
+#include <vector>
+#include <list>
 
 unsigned int shaderProgram;
 unsigned int VBO, VAO;
@@ -335,7 +338,34 @@ bool doQEM(GLFWwindow *window)
 
 bool QEM(std::vector<float>& inputVector)
 {
-    std::vector<Eigen::Vector3f> points;
-    std::vector<Eigen::Vector3f> normals;
+    list<OBJIndex> objIndex;
+    vector<glm::vec3> vertices;
+    vector<glm::vec3> normals;
+
+    for(int i = 0; i < inputVector.size(); i++)
+    {
+        glm::vec3 vertex, normal;
+        vertex.x = inputVector[i++];
+        vertex.y = inputVector[i++];
+        vertex.z = inputVector[i++];
+        normal.x = inputVector[i++];
+        normal.y = inputVector[i++];
+        normal.z = inputVector[i];
+        vertices.push_back(vertex);
+        normals.push_back(normal);
+        OBJIndex tmpIndex;
+        tmpIndex.vertexIndex = i;
+        tmpIndex.normalIndex = i;
+        objIndex.push_back(tmpIndex);
+    }
+
+    MeshSimplification m(objIndex, vertices);
+    m.print();
+    list<OBJIndex> retobjIndex;
+    vector<glm::vec3> retvertices;
+
+    retobjIndex = m.getIndices();
+    retvertices = m.getVertices();
+    
     return true;
 }
